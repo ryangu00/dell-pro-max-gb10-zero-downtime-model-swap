@@ -4,7 +4,7 @@ All eval-bank numbers below are from **our private 11-category eval bank (questi
 
 ## Table A — cutover acceptance
 
-Conditions: single cutover event on 2026-09-20; verdict "验收全过" / all passed. (The exact completion timestamp and time zone are **not recorded** in this cookbook.)
+Conditions: single cutover event on 2026-09-20; verdict: all acceptance checks passed. (The exact completion timestamp and time zone are **not recorded** in this cookbook.)
 
 | Probe | Result |
 |---|---|

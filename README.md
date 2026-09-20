@@ -72,7 +72,7 @@ The switch script exposes a set of named modes (the script as read on 2026-09-20
 
 All eval-bank numbers below are from **our private 11-category eval bank (questions not published)**; category names (c1-kbqa … c10-sre-ops) are public. **One run unless stated.** What a reader can reuse: the alias flag, the docker log-snapshot and removal order, the acceptance-probe list; the engine build, recipe and switch script are not published, so timings are reported only. Private-bank scores are **reported only** and are not independently reproducible. Full tables with conditions live in `docs/results.md`.
 
-**Table A — cutover acceptance, 2026-09-20** (single cutover event, "验收全过" / all passed):
+**Table A — cutover acceptance, 2026-09-20** (single cutover event, all acceptance checks passed):
 
 | Probe | Result |
 |---|---|
