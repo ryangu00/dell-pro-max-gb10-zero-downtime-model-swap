@@ -63,8 +63,8 @@ Each pitfall is given as **symptom / root cause / fix / how we found it**. Numbe
 ## 9. Host reboots during cold prefill
 
 - **Symptom:** Host reboots occurred during cold prefill of large prompts on the DSV4F dual stack.
-- **Root cause:** Observation — cold prefill ≥200K reboots the host on that stack; root cause not recorded. Reboot diagnostics, versions, concurrency, and memory conditions are **not recorded**; the 120–144K band is an observed safe range for that specific configuration, not a general limit.
-- **Fix:** Cap cold prompts at the 120–144K empirically safe band; ≥200K cold prefill is forbidden.
+- **Root cause:** Observation — cold prefill >=200K reboots the host on that stack; root cause not recorded. That observation (two host reboots) was made on the previous community image with GPU driver 580.142. It did not reproduce on a different stack: with the eugr cluster recipe, kernel 7.0.0-1019-nvidia and driver 580.178.04 (after the 2026-09-18 platform update), cold prefills of about 200K, 400K, 700K and 950K tokens each completed once on 2026-09-25 with no host reboot. Not reproduced is not the same as fixed: the stack and the driver/kernel changed together, so the cause of the earlier reboots is still unknown, and each size was run once. Reboot diagnostics, concurrency, and memory conditions for the earlier reboot runs are **not recorded**; the 120–144K band is an observed safe range for that specific configuration only, not a general limit.
+- **Fix:** On the previous community image with driver 580.142, cap cold prompts at the 120–144K empirically safe band. On another stack, measure your own limit before copying this cap.
 - **How we found it:** Prior-generation operational fact (2026-09-01 cutover of the DSV4F dual).
 
 ## 10. Derived-proxy file becomes unparseable after scripted edits
@@ -79,6 +79,8 @@ Each pitfall is given as **symptom / root cause / fix / how we found it**. Numbe
 - **Symptom:** After a node reboot, no containers were running.
 - **Root cause:** Containers run `--restart no` by design — nothing auto-starts on boot.
 - **Fix:** The switch script is the boot procedure. Restart order: standby node first, then main node, then drop caches (`sync; echo 3 | tee /proc/sys/vm/drop_caches` — requires root on each Linux host) on both nodes before launching.
+- **Cost:** A real power outage left production down about three days because the only alert fired once.
+- **Known gap:** No boot auto-start exists yet. The open design question is whether to auto-start at all, because auto-restarting an engine that can hang in a collective could create a restart loop.
 - **How we found it:** Operational rule from the 2026-09-01 DSV4F dual cutover; reinforced by the restart policy on every container.
 
 ## 12. Cutover "succeeded" but clients broke

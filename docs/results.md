@@ -59,9 +59,9 @@ Conditions: 2026-09-01 cutover of the DSV4F dual.
 
 | Item | Value |
 |---|---|
-| Cold prefill limit | ≥200K forbidden (a host-reboot landmine on that stack); 120–144K empirically safe. Reboot diagnostics, versions, concurrency, and memory conditions are **not recorded**; treat the 120–144K band as an observed safe range for this specific configuration, not a general limit |
+| Cold prefill limit | Observation — >=200K cold prefill reboots the host on that stack; root cause not recorded. That observation (two host reboots) was made on the previous community image with GPU driver 580.142. It did not reproduce on a different stack: with the eugr cluster recipe, kernel 7.0.0-1019-nvidia and driver 580.178.04 (after the 2026-09-18 platform update), cold prefills of about 200K, 400K, 700K and 950K tokens each completed once on 2026-09-25 with no host reboot. Not reproduced is not the same as fixed: the stack and the driver/kernel changed together, so the cause of the earlier reboots is still unknown, and each size was run once. Reboot diagnostics, concurrency, and memory conditions for the earlier reboot runs are **not recorded**; the 120–144K band is an observed safe range for the original configuration only, not a general limit. |
 | Concurrency | short requests only — cold large-prompt concurrency was observed at an ~8 tok/s floor (input/output length, concurrency count, per-request vs total throughput, measurement window, and sample count are **not recorded**; a single observation does not prove a floor) |
-| Rollback | one command; classic configuration retained with zero deletions |
+| Rollback | At introduction (2026-09-01): one command; classic configuration retained with zero deletions. Not true since 2026-09-24 (container and image of the classic stack deleted). |
 | dual↔classic round trip | drill validated at introduction |
 
 ## Source disagreements
@@ -69,5 +69,5 @@ Conditions: 2026-09-01 cutover of the DSV4F dual.
 Listed as required by the source sheet.
 
 - Earlier snapshots of the switch script describe a smaller mode set than the script as read on 2026-09-20; the current list is the script as read on that date. (Mode names and the historical mode-count lists are private; use the public abstraction `switch/stack-mode.sh` in `dell-pro-max-gb10-vllm-stack-ab`.)
-- The DSV4F dual alias changed which image/variant it pointed at after a 2026-09-17 A/B; the fixed-version before/after pointer, the two snapshots, and the rollback target are **not recorded** — do not treat the alias-pointer change as a verifiable provenance claim.
+- The DSV4F dual alias changed which image/variant it pointed at after a 2026-09-17 A/B; the fixed-version before/after pointer, the two snapshots, and the fixed-version rollback artifacts are **not recorded** — do not treat the alias-pointer change as a verifiable provenance claim.
 - Port-tier semantics changed between generations: the fast-tier port / quality-tier port were thinking-off/on under the previous engine and are thinking-low/medium under the Qwen3.8-Flash-Next 1M engine.
